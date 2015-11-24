@@ -87,7 +87,7 @@ function postComment(text) {
   });
 }
 
-getChangedText.then(text => {
+getChangedText().then(text => {
 
   return textlint.lintMarkdown(text);
 

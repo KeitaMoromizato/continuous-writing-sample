@@ -53,7 +53,7 @@ const ghSetting = {
 // run
 function getChangedText() {
   return new Promise((resolve, reject) => {
-    this.githubAPI.pullRequests.getFiles(ghSetting, (error, data) => {
+    githubAPI.pullRequests.getFiles(ghSetting, (error, data) => {
       if (error) return reject(error);
 
       const file = find(data, f => f.filename.indexOf('.md') !== -1 );
@@ -62,7 +62,7 @@ function getChangedText() {
 
       if (!file) return reject(new Error('file not found'));
 
-      this.githubAPI.repos.getContent(extend({}, ghSetting, {
+      githubAPI.repos.getContent(extend({}, ghSetting, {
         ref: process.env.CIRCLE_SHA1,
         path: file.filename
       }), (error, data) => {
@@ -80,7 +80,7 @@ function getChangedText() {
 
 function postComment(text) {
   return new Promise((resolve, reject) => {
-    this.githubAPI.issues.createComment(extend({}, ghSetting, { body: text }), (error, data) => {
+    githubAPI.issues.createComment(extend({}, ghSetting, { body: text }), (error, data) => {
       if (error) console.log(error);
       // DO NOTHING
     });

@@ -12,7 +12,7 @@ import AppearenceCountOfWordsConfig from '../ruleConfig/appearenceCountOfWords.j
 import MaxLengthOfTitleConfig from '../ruleConfig/maxLengthOfTitle.json';
 import NGWordConfig from '../ruleConfig/ngWord.json';
 
-import {find, assign} from 'lodash';
+import {find, assign, reduce} from 'lodash';
 import github from 'github';
 
 const textlint = new TextLintCore();
@@ -58,8 +58,6 @@ function getChangedText() {
 
       const file = find(data, f => f.filename.indexOf('.md') !== -1 );
 
-      console.log("success getFiles() : ", file);
-
       if (!file) return reject(new Error('file not found'));
 
       githubAPI.repos.getContent(assign({}, ghSetting, {
@@ -69,10 +67,7 @@ function getChangedText() {
           if (error) return reject(error);
 
           const buffer = new Buffer(data.content, data.encoding);
-          const content = buffer.toString();
-
-          console.log("success getContent() : ", content);
-          resolve(content);
+          resolve(buffer.toString());
         });
     });
   });

@@ -88,7 +88,7 @@ getChangedText().then(text => {
 
 }).then(result => {
 
-  const messages = reduce(result.messages, (sum, m) => `sum|${m.message}|\n`, '');
+  const messages = reduce(result.messages, (sum, m) => `${sum}|${m.message}|\n`, '');
   return postComment(`|#|\n|---|\n${messages}`);
 
 }).then(__ => {

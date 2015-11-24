@@ -62,7 +62,7 @@ function getChangedText() {
 
       if (!file) return reject(new Error('file not found'));
 
-      githubAPI.repos.getContent(extend({}, ghSetting, {
+      githubAPI.repos.getContent(assing({}, ghSetting, {
         ref: process.env.CIRCLE_SHA1,
         path: file.filename
       }), (error, data) => {
@@ -80,7 +80,7 @@ function getChangedText() {
 
 function postComment(text) {
   return new Promise((resolve, reject) => {
-    githubAPI.issues.createComment(extend({}, ghSetting, { body: text }), (error, data) => {
+    githubAPI.issues.createComment(assing({}, ghSetting, { body: text }), (error, data) => {
       if (error) console.log(error);
       // DO NOTHING
     });

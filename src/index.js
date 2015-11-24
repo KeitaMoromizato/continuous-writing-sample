@@ -88,7 +88,7 @@ getChangedText().then(text => {
 
 }).then(result => {
 
-  return postComment(reduce(result.mesasges, (sum, m) => `${sum}${m.message}\n`));
+  return postComment(reduce(result.messages, (sum, m) => `${sum}${m.message}\n`));
 
 }).then(__ => {
   // ok

@@ -12,7 +12,7 @@ import AppearenceCountOfWordsConfig from '../ruleConfig/appearenceCountOfWords.j
 import MaxLengthOfTitleConfig from '../ruleConfig/maxLengthOfTitle.json';
 import NGWordConfig from '../ruleConfig/ngWord.json';
 
-import {find, assing} from 'lodash';
+import {find, assign} from 'lodash';
 import github from 'github';
 
 const textlint = new TextLintCore();
@@ -62,7 +62,7 @@ function getChangedText() {
 
       if (!file) return reject(new Error('file not found'));
 
-      githubAPI.repos.getContent(assing({}, ghSetting, {
+      githubAPI.repos.getContent(assign({}, ghSetting, {
         ref: process.env.CIRCLE_SHA1,
         path: file.filename
       }), (error, data) => {
@@ -80,7 +80,7 @@ function getChangedText() {
 
 function postComment(text) {
   return new Promise((resolve, reject) => {
-    githubAPI.issues.createComment(assing({}, ghSetting, { body: text }), (error, data) => {
+    githubAPI.issues.createComment(assign({}, ghSetting, { body: text }), (error, data) => {
       if (error) console.log(error);
       // DO NOTHING
     });

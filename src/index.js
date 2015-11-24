@@ -12,8 +12,8 @@ import AppearenceCountOfWordsConfig from '../ruleConfig/appearenceCountOfWords.j
 import MaxLengthOfTitleConfig from '../ruleConfig/maxLengthOfTitle.json';
 import NGWordConfig from '../ruleConfig/ngWord.json';
 
-import {find, assing} from 'lodash';
-import * as GitHubApi from 'github';
+import {find, assign, reduce} from 'lodash';
+import github from 'github';
 
 const textlint = new TextLintCore();
 textlint.setupRules({
@@ -27,12 +27,12 @@ textlint.setupRules({
   'ng-word': NGWordConfig,
 });
 
-const github = new GitHubApi({
+const githubAPI = new github({
   version: "3.0.0",
   debug: true,
   protocol: "https",
 });
-github.authenticate({
+githubAPI.authenticate({
   type: "oauth",
   token: process.env.GITHUB_API_KEY
 });
@@ -53,26 +53,21 @@ const ghSetting = {
 // run
 function getChangedText() {
   return new Promise((resolve, reject) => {
-    this.github.pullRequests.getFiles(ghSetting, (error, data) => {
+    githubAPI.pullRequests.getFiles(ghSetting, (error, data) => {
       if (error) return reject(error);
 
       const file = find(data, f => f.filename.indexOf('.md') !== -1 );
 
-      console.log("success getFiles() : ", file);
-
       if (!file) return reject(new Error('file not found'));
 
-      this.github.repos.getContent(extend({}, ghSetting, {
+      githubAPI.repos.getContent(assign({}, ghSetting, {
         ref: process.env.CIRCLE_SHA1,
         path: file.filename
       }), (error, data) => {
           if (error) return reject(error);
 
           const buffer = new Buffer(data.content, data.encoding);
-          const content = buffer.toString();
-
-          console.log("success getContent() : ", content);
-          resolve(content);
+          resolve(buffer.toString());
         });
     });
   });
@@ -80,20 +75,21 @@ function getChangedText() {
 
 function postComment(text) {
   return new Promise((resolve, reject) => {
-    this.github.issues.createComment(extend({}, ghSetting, { body: text }), (error, data) => {
+    githubAPI.issues.createComment(assign({}, ghSetting, { body: text }), (error, data) => {
       if (error) console.log(error);
       // DO NOTHING
     });
   });
 }
 
-getChangedText.then(text => {
+getChangedText().then(text => {
 
   return textlint.lintMarkdown(text);
 
 }).then(result => {
 
-  return postComment(reduce(result.mesasges, (sum, m) => `${sum}${m.message}\n`));
+  const messages = reduce(result.messages, (sum, m) => `${sum}|${m.message}|\n`, '');
+  return postComment(`|#|\n|---|\n${messages}`);
 
 }).then(__ => {
   // ok

@@ -12,7 +12,7 @@ import AppearenceCountOfWordsConfig from '../ruleConfig/appearenceCountOfWords.j
 import MaxLengthOfTitleConfig from '../ruleConfig/maxLengthOfTitle.json';
 import NGWordConfig from '../ruleConfig/ngWord.json';
 
-import {find, assign, map} from 'lodash';
+import {find, assign, reduce} from 'lodash';
 import github from 'github';
 
 const textlint = new TextLintCore();
@@ -88,7 +88,8 @@ getChangedText().then(text => {
 
 }).then(result => {
 
-  return postComment(`|#|\n|---|\n${map(result.messages, m => "|" + m.message + "|\n")}`);
+  const messages = reduce(result.messages, (sum, m) => `sum|${m.message}|\n`, '');
+  return postComment(`|#|\n|---|\n${messages}`);
 
 }).then(__ => {
   // ok

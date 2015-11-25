@@ -70,31 +70,3 @@ https://github.com/KeitaMoromizato/chrome-text-counter
 
 # おわりに
 大手メディアでは自動校正ツールを自作しているという話も聞きますが、この方法なら駆け出しのメディアでも工夫次第で記事のクオリティアップ、作業の効率化ができるのではないかと思います。Qiitaのような場に技術文章を書いている人も試してみると良いのではないでしょうか。
-
-ここから追記
----
-
-# textlintの活用
-上記の校正システムを自前で作ってたのですが、[textlint](http://efcl.info/2015/09/10/introduce-textlint/)のルールとして一般化しました。textlintはver5から非同期APIに対応したため、Yahoo校正APIもLintのルールとして使用することが出来ます。作成したRuleは以下の4つです。
-
-## [textlint-rule-ja-yahoo-kousei](https://www.npmjs.com/package/textlint-rule-ja-yahoo-kousei)
-Yahooの校正APIを叩くtextlintのルールです
-
-## [textlint-rule-max-appearence-count-of-words](https://www.npmjs.com/package/textlint-rule-max-appearence-count-of-words)
-段落内の単語の出現回数をチェックします。内部的にはkuromoji.jsを使用しています。
-
-## [textlint-rule-max-length-of-title](https://www.npmjs.com/package/textlint-rule-max-length-of-title)
-タイトルの文字数をチェックします。たぶん、textlintの作者の意図としては本来[textstat](https://github.com/azu/textstat)のルールにするべきだとは思いますが、多くのメディアやSEOを気にかけるライターにとってはタイトル文字数はLintでチェックすべき指標だと思います。
-
-## [textlint-rule-ng-word](https://www.npmjs.com/package/textlint-rule-ng-word)
-NGワードを登録しておくと、そのワードが出た時にエラーを出してくれます。ConfigでNGワードを登録しなければこのルールは何も動作しません。
-
-## サンプル
-これらのルールを使用してCIに組み込んだサンプルレポジトリです。textlint、configの使用方法などの参考になればと思います。
-https://github.com/KeitaMoromizato/continuous-writing-sample
-
-# 参考
-上に挙げたtextlintを使用したレポジトリを参照下さい。
-
-~~以下のレポジトリに今回のコードを置いています。実際に使っている環境から切り離しただけで、まだ汎用的に作れていないのですが参考までに。~~
-~~https://github.com/KeitaMoromizato/continuous-writing~~

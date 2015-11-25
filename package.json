@@ -13,10 +13,10 @@
     "github": "^0.2.4",
     "lodash": "^3.10.1",
     "textlint": "^5.0.2",
-    "textlint-rule-ja-yahoo-kousei": "0.0.2",
-    "textlint-rule-max-appearence-count-of-words": "0.0.2",
-    "textlint-rule-max-length-of-title": "0.0.1",
-    "textlint-rule-ng-word": "0.0.1"
+    "textlint-rule-ja-yahoo-kousei": "^1.0.0",
+    "textlint-rule-max-appearence-count-of-words": "^1.0.0",
+    "textlint-rule-max-length-of-title": "^1.0.0",
+    "textlint-rule-ng-word": "^1.0.0"
   },
   "devDependencies": {
     "babel": "^5.8.34"
